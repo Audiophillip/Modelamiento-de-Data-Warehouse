@@ -1,0 +1,22 @@
+-- cantidad de  registros distintos
+select COUNT(DISTINCT CODENTIDAD) from tmp_bancos;
+
+-- valores maximos y minimos
+select * from tmp_bancos
+
+select MAX(LENGTH(trim(codentidad))) from tmp_bancos;
+-- 5
+select Min(LENGTH(trim(codentidad))) from tmp_bancos;
+--- 5
+
+
+-- identificar valores nulos
+select  * from tmp_bancos
+where 
+trim(codentidad) is null;
+
+-- idenitificar si existen valores duplicados en el campo
+-- codentidad
+select trim(codentidad), count(*) from tmp_bancos
+group by trim(codentidad)
+having count(*) >1;
