@@ -1,0 +1,162 @@
+CREATE TABLE DIM_UBIGEO (
+  Codubigeo VARCHAR(6),
+  Departamento VARCHAR(45),
+  Provincia VARCHAR(45) ,
+  Distrto VARCHAR(50) ,
+  FLG_Zona VARCHAR(45) ,
+  FLG_Ciudad VARCHAR(45)
+ )
+
+INSERT INTO DIM_UBIGEO(
+  Codubigeo,
+  Departamento,
+  Provincia,
+  Distrto,
+  FLG_Zona,
+  FLG_Ciudad)
+SELECT 
+CODUBIGEO,
+DEPARTAMENTO,
+PROVINCIA,
+DISTRITO,
+FLG_ZONA,
+FLG_CIUDAD
+FROM M_UBIGEO
+
+
+
+
+CREATE TABLE DIM_PERSONA(
+  Numdoc VARCHAR(9),
+  DifVer INT(5) ,
+  GrpVot VARCHAR(50) ,
+  Cod_Ubigeo VARCHAR(6) ,
+  ApPaterno VARCHAR(45) ,
+  ApMaterno VARCHAR(45) ,
+  Nombres VARCHAR(45) ,
+  FecNac DATETIME ,
+  Sexo SMALLINT(1) 
+ )
+ 
+INSERT INTO DIM_PERSONA(
+ Numdoc,
+  DifVer,
+  GrpVot,
+  Cod_Ubigeo,
+  ApPaterno,
+  ApMaterno,
+  Nombres,
+  FecNac,
+  Sexo
+  )
+SELECT
+NumDoc ,
+DigVer,
+GrpVot ,
+Ubigeo,
+ApPaterno,
+ApMaterno ,
+Nombres ,
+to_date(FecNac,'YYYYMMDD') ,
+Sexo
+FROM M_PERSONA
+
+
+
+
+CREATE TABLE DIM_ENTIDADFINANCIERA(
+  Cod_Entidad DECIMAL(10),
+  NomBanco VARCHAR(45) ,
+  NomCorto VARCHAR(45) ,
+  TipoEntidad VARCHAR(45) ,
+  TipoCompetencia VARCHAR(45) 
+)
+
+INSERT INTO DIM_ENTIDADFINANCIERA(
+ CODENTIDAD,
+  BANCO,
+  NOMBREBANCO,
+  TIPENTIDAD,
+  TIPOCOMPETENCIA,
+  TIPOCOMPETENCIA2
+)
+SELECT 
+ Cod_Entidad,
+  NomBanco,
+  NomCorto,
+  TipoEntidad ,
+  TipoCompetencia
+ FROM M_ENTIDADFINANCIERA
+
+
+
+CREATE TABLE DIM_CLIENTEDEUDA(
+  Periodo VARCHAR(6),
+  TipReg INT ,
+  CodSBSCLI DECIMAL(10) ,
+  FecReporte VARCHAR(45) ,
+  TipoDoctri VARCHAR(45) ,
+  RUC VARCHAR(45) ,
+  TipDocide VARCHAR(45) ,
+  NumDoc VARCHAR(9) ,
+  TipoPersona VARCHAR(45) ,
+  TipoEmpresa VARCHAR(45) ,
+  CanEmpresa INT ,
+  DEU_CALIF0 FLOAT ,
+  DEU_CALIF1 FLOAT ,
+  DEU_CALIF3 FLOAT ,
+  DEU_CALIF4 FLOAT ,
+  RazSoc_Apec VARCHAR(45) ,
+  Apemat VARCHAR(45) ,
+  Apecasada VARCHAR(45) ,
+  Nombre1 VARCHAR(45) ,
+  Nombre2 VARCHAR(45) ,
+  NumDoc VARCHAR(9) ,
+  CodUbigeo VARCHAR(6) 
+)
+
+INSERT INTO DIM_CLIENTEDEUDA(
+periodo,
+Tip_Reg ,
+Cod_Sbs_Cli,
+Fec_Reporte,
+Tip_Doc_Tri,
+RUC,
+Tip_Doc_Ide,
+Doc_Identidad ,
+Tip_Persona,
+Tip_Empresa ,
+Can_Empresa,
+cast(trim(replace(Deu_Calif0,'.',',')) as decimal(10,2))   ,
+cast(trim(replace(Deu_Calif1,'.',',')) as decimal(10,2)) ,
+cast(trim(replace(Deu_Calif2,'.',',')) as decimal(10,2))  ,
+cast(trim(replace(Deu_Calif3,'.',',')) as decimal(10,2)),
+cast(trim(replace(Deu_Calif4,'.',',')) as decimal(10,2))  ,
+Raz_Soc_o_AP ,
+Ape_Materna ,
+Ape_Casada ,
+Nombre1,
+Nombre2 
+)
+SELECT 
+ Periodo,
+ TipReg ,
+ CodSBSCLI ,
+ FecReporte,
+ TipoDoctri,
+ RUC,
+ TipDocide,
+ NumDoc,
+ TipoPersona,
+ TipoEmpresa,
+ CanEmpresa,
+ DEU_CALIF0,
+ DEU_CALIF1,
+ DEU_CALIF3,
+ DEU_CALIF4,
+ RazSoc_Apec,
+ Apemat,
+ Apecasada,
+ Nombre1,
+ Nombre2
+ FOM M_CLIENTEDEUDA 
